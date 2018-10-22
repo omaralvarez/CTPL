@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.7)
+project(CTPL VERSION 1.0.0 LANGUAGES CXX)
+
+# Include
+include(GNUInstallDirs)
+include(ExternalProject)
+
+add_library(${PROJECT_NAME} INTERFACE)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
+
+target_include_directories(${PROJECT_NAME} INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
+
+install(TARGETS ${PROJECT_NAME} EXPORT CTPLConfig
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+
+install(EXPORT CTPLConfig DESTINATION share/CTPL/cmake)
+
+export(TARGETS ${PROJECT_NAME} FILE CTPLConfig.cmake)
